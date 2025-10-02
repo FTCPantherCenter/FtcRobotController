@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 @TeleOp
-class BaseMecanumDriveRemade extends OpMode {
+public class BaseMecanumDriveRemade extends OpMode {
 
 
 
@@ -51,7 +51,7 @@ class BaseMecanumDriveRemade extends OpMode {
         }
 
 
-        if (gamepad1.left_stick_x == 0.0) {
+        if (gamepad1.right_stick_x != 0.0 || gamepad1.right_stick_y != 0.0) {
             rightFront.setPower((-gamepad1.right_stick_x + (-gamepad1.right_stick_y)));
             rightBack.setPower(((gamepad1.right_stick_x) + (-gamepad1.right_stick_y)));
             leftFront.setPower(((gamepad1.right_stick_x) + (-gamepad1.right_stick_y)));

@@ -6,10 +6,12 @@ import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class basicFunctions{
-    DcMotor leftFront = null;
-    DcMotor rightFront = null;
-    DcMotor leftBack = null;
-    DcMotor rightBack = null;
+    public void basicFunctions() {
+        DcMotor leftFront = null;
+        DcMotor rightFront = null;
+        DcMotor leftBack = null;
+        DcMotor rightBack = null;
+    }
 
     public void init(HardwareMap hwMap){
         leftFront = hwMap.get(DcMotor.class, "fl_drive");
@@ -25,11 +27,18 @@ public class basicFunctions{
 
     }
 
-    public void full_move(double power){
-        leftFront.setPower(power);
-        leftBack.setPower(power);
-        rightFront.setPower(power);
-        rightBack.setPower(power);
+    public void move(double power_y, double power_x){
+        rightFront.setPower((-power_x + (-power_y)));
+        rightBack.setPower(((power_x) + (-power_y)));
+        leftFront.setPower(((power_x) + (-power_y)));
+        leftBack.setPower((-power_x + (-power_y)));
+
+
     }
 
+    public void turn(double turn_pow)
+        leftFront.setPower(turn_pow);
+        rightFront.setPower(-turn_pow);
+        leftBack.setPower(turn_pow);
+        rightBack.setPower(-turn_pow);
 }
