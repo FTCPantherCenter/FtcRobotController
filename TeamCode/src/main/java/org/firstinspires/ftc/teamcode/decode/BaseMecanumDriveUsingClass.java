@@ -5,7 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-
+/**
+ * This is a teleop implictation of the basiFunctions class
+ * We begin by declaring but not defining basic functions out of any methods, then define basic functions, named do Stuff here, in the init method
+ * We also run the doStuff init method with the HardwareMap from the OpMode init method
+ * The loop integrates the turn and move methods, with the left stick x controlling turning, and the right stick x and y controlling straffing
+ * The move method in doStuff is used to stop the robot
+ */
 
 @TeleOp
 public class BaseMecanumDriveRemade extends OpMode {
@@ -20,9 +26,6 @@ public void init() {
     @Override
     //basic movement and motor control
     public void loop() {
-
-
-
 
         if (gamepad1.left_stick_x != 0.0 ){
             //turning with left joystick horizontal

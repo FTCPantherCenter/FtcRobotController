@@ -5,6 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+/**
+ * This class include basic robot moving functions such as:
+ * Automatically initalizing the motors for "lowercase left-right" "Uppercase Front-Back", drive using encoder
+ * The constructor defiles the DcMotors as null
+ * 2 Methods are: move, turn(not including init or contstructor)
+ * Move takes the input of a x and y power, meant to be controller joystick cordinates, and moves the motors using a mecanum formula
+ * Turn takes 1 parameter, turn power, with a negative power turning left, and a positive power turning right. The input is meant to be a controller joystick x cordinate. The robot turns in place with proper mass distribution
+ */
 public class basicFunctions{
     public void basicFunctions() {
         DcMotor leftFront = null;
@@ -24,7 +32,10 @@ public class basicFunctions{
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
 
-
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void move(double power_y, double power_x){
