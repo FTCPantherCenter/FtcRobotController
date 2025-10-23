@@ -24,6 +24,10 @@ public class basicFunctions{
         DcMotor rightBack = null;
     }
 
+    DcMotor leftFront = null;
+    DcMotor rightFront = null;
+    DcMotor leftBack = null;
+    DcMotor rightBack = null;
     /**
      * This is the hardwaremap, to be ran within the init(), it sets motors, sets their directions, and their run modes
      * @param hwMap In this variable you pass hardwareMap within the init(), which creates it
@@ -63,9 +67,10 @@ public class basicFunctions{
      * This turns the robot in place, assuming a perfect center of mass
      * @param turn_pow Put the power of turning in place, with positive to the right and negative to the left
      */
-    public void turn(double turn_pow)
+    public void turn(double turn_pow) {
         leftFront.setPower(turn_pow);
         rightFront.setPower(-turn_pow);
         leftBack.setPower(turn_pow);
         rightBack.setPower(-turn_pow);
+    }
 }

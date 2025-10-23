@@ -34,11 +34,11 @@ basicFunctions funct = new basicFunctions();
     }
 
     public void start() {
-        funct.full_move(1);
+        funct.move(1,0);
         ElapsedTime timer = new ElapsedTime();
         while (timer.milliseconds() < 200){
         }
-        funct.full_move(0);
+        funct.move(0,0);
     }
     public void loop(){
 

@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  */
 
 @TeleOp
-public class BaseMecanumDriveRemade extends OpMode {
+public class BaseMecanumDriveUsingClass extends OpMode {
 basicFunctions doStuff;
 
 public void init() {
@@ -29,17 +29,17 @@ public void init() {
 
         if (gamepad1.left_stick_x != 0.0 ){
             //turning with left joystick horizontal
-            doStuff.turn(gamepad1.left_stick_x)
+            doStuff.turn(gamepad1.left_stick_x);
         }
 
 
         if (gamepad1.right_stick_x != 0.0 || gamepad1.right_stick_y != 0.0) {
-            doStuff.move(gamepad1.right_stick_x,gamepad1.right_stick_y)
+            doStuff.move(gamepad1.right_stick_x,gamepad1.right_stick_y);
         }
 
     }
     //stop button pressed
     public void stop(){
-        doStuff.move(0)
+        doStuff.move(0,0);
     }
 }
