@@ -1,46 +1,27 @@
 package org.firstinspires.ftc.teamcode.decode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.security.KeyStore;
+
 @Autonomous
-public class autoBaseLeave extends OpMode {
-basicFunctions funct = new basicFunctions();
+public class autoBaseLeave extends LinearOpMode {
 
-    DcMotor leftFront = null;
-    DcMotor rightFront = null;
-    DcMotor leftBack = null;
-    DcMotor rightBack = null;
+    basicFunctions robotStuff;
 
 
-
-
-    //initialization
-    public void init(){
-        leftFront = hardwareMap.get(DcMotor.class, "fl_drive");
-        leftBack = hardwareMap.get(DcMotor.class, "bl_drive");
-        rightFront = hardwareMap.get(DcMotor.class, "fr_drive");
-        rightBack = hardwareMap.get(DcMotor.class, "br_drive");
-
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
-
-
-    }
-
-    public void start() {
-        funct.move(1,0);
-        ElapsedTime timer = new ElapsedTime();
-        while (timer.milliseconds() < 200){
-        }
-        funct.move(0,0);
-    }
-    public void loop(){
-
+    @Override
+    public void runOpMode() throws InterruptedException {
+        robotStuff = new basicFunctions();
+        robotStuff.init(hardwareMap);
+        waitForStart();
+        robotStuff.move(1,0.5);
+        sleep(500);
+        robotStuff.move(0,0.5);
     }
 }

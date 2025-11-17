@@ -17,7 +17,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class BaseMecanumDriveUsingClass extends OpMode {
 basicFunctions doStuff;
 
-public void init() {
+    /**
+     * This is where the doStuff class is created/defined and the initialization of motors happens
+     */
+    public void init() {
         doStuff = new basicFunctions();
         doStuff.init(hardwareMap);
     }
@@ -25,6 +28,11 @@ public void init() {
 
     @Override
     //basic movement and motor control
+    /**
+     * The main loop for the robot control. This includes launcher, intake, and drivetrain control. The left stick is used for turning, while the right stick is used for all strafing movement
+     * The right bumper is used to launch the ball(s) in the launcher
+     * The right trigger is used to activate intake(WIP)
+     */
     public void loop() {
 
         if (gamepad1.left_stick_x != 0.0 ){
@@ -35,6 +43,13 @@ public void init() {
 
         if (gamepad1.right_stick_x != 0.0 || gamepad1.right_stick_y != 0.0) {
             doStuff.move(gamepad1.right_stick_y,gamepad1.right_stick_x);
+        }
+
+        //if (gamepad1.right_bumper){
+        //  doStuff.full_launch(1);
+       // }
+        if (gamepad1.right_stick_x == 0.0 || gamepad1.right_stick_y == 0.0) {
+            doStuff.move(0,0);
         }
 
     }
