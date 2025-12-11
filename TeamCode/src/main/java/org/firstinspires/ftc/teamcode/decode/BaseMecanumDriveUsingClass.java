@@ -45,9 +45,9 @@ basicFunctions doStuff;
             doStuff.move(gamepad1.right_stick_y,gamepad1.right_stick_x);
         }
 
-        //if (gamepad1.right_bumper){
-        //  doStuff.full_launch(1);
-       // }
+        if (gamepad1.right_bumper){
+          doStuff.full_launch(1);
+        }
         if (gamepad1.right_stick_x == 0.0 || gamepad1.right_stick_y == 0.0) {
             doStuff.move(0,0);
         }
