@@ -27,16 +27,16 @@ public class basicFunctions{
         DcMotor rightFront = null;
         DcMotor leftBack = null;
         DcMotor rightBack = null;
-        //DcMotor flyLaunch = null;
+        DcMotor flyLaunch = null;
         //CRServo leftBoost = null;
         //CRServo rightBoost = null;
     }
 
-    DcMotor leftFront = null;
-    DcMotor rightFront = null;
-    DcMotor leftBack = null;
-    DcMotor rightBack = null;
-    //DcMotor flyLaunch = null;
+    DcMotor leftFront;
+    DcMotor rightFront;
+    DcMotor leftBack;
+    DcMotor rightBack;
+    DcMotor flyLaunch = null;
     //CRServo leftBoost = null;
     //CRServo rightBoost = null;
     /**
@@ -49,7 +49,7 @@ public class basicFunctions{
         rightFront = hwMap.get(DcMotor.class, "fr_drive");
         rightBack = hwMap.get(DcMotor.class, "br_drive");
 
-        //flyLaunch = hwMap.get(DcMotor.class,"fly_wheel");
+        flyLaunch = hwMap.get(DcMotor.class,"fly_wheel");
         //leftBoost = hwMap.get(CRServo.class,"left_boost");
         //rightBoost = hwMap.get(CRServo.class,"right_boost");
 
@@ -58,13 +58,13 @@ public class basicFunctions{
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
-        //flyLaunch.setDirection((DcMotorSimple.Direction.FORWARD));
+        flyLaunch.setDirection((DcMotorSimple.Direction.FORWARD));
 
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //flyLaunch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        flyLaunch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     /**
@@ -86,21 +86,21 @@ public class basicFunctions{
      * @param turn_pow Put the power of turning in place, with positive to the right and negative to the left
      */
     public void turn(double turn_pow) {
-        leftFront.setPower(turn_pow);
         rightFront.setPower(-turn_pow);
-        leftBack.setPower(turn_pow);
         rightBack.setPower(-turn_pow);
+        leftFront.setPower(turn_pow);
+        leftBack.setPower(turn_pow);
     }
     //public void boost(double boost_pow){
      //   leftBoost.setPower(boost_pow);
     //    rightBoost.setPower(boost_pow);
     //}
-    //public void launch(double launch_pow){
-        //flyLaunch.setPower(launch_pow);
-   // }
+    public void launch(double launch_pow){
+        flyLaunch.setPower(launch_pow);
+    }
 
-    //public void full_launch(double launch_pow) {
-    //    launch(1);
-    //    boost(1);
-   // }
+    public void full_launch(double launch_pow) {
+        launch(launch_pow);
+        //boost(1);
+    }
 }
