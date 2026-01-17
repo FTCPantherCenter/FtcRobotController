@@ -28,8 +28,8 @@ public class basicFunctions{
         DcMotor leftBack = null;
         DcMotor rightBack = null;
         DcMotor flyLaunch = null;
-        //CRServo leftBoost = null;
-        //CRServo rightBoost = null;
+       // CRServo leftBoost = null;
+       // CRServo rightBoost = null;
     }
 
     DcMotor leftFront;
@@ -38,7 +38,7 @@ public class basicFunctions{
     DcMotor rightBack;
     DcMotor flyLaunch = null;
     //CRServo leftBoost = null;
-    //CRServo rightBoost = null;
+   // CRServo rightBoost = null;
     /**
      * This is the hardwaremap, to be ran within the init(), it sets motors, sets their directions, and their run modes
      * @param hwMap In this variable you pass hardwareMap within the init(), which creates it
@@ -51,12 +51,12 @@ public class basicFunctions{
 
         flyLaunch = hwMap.get(DcMotor.class,"fly_wheel");
         //leftBoost = hwMap.get(CRServo.class,"left_boost");
-        //rightBoost = hwMap.get(CRServo.class,"right_boost");
+       // rightBoost = hwMap.get(CRServo.class,"right_boost");
 
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
         flyLaunch.setDirection((DcMotorSimple.Direction.FORWARD));
 
@@ -86,21 +86,38 @@ public class basicFunctions{
      * @param turn_pow Put the power of turning in place, with positive to the right and negative to the left
      */
     public void turn(double turn_pow) {
-        rightFront.setPower(-turn_pow);
+        rightFront.setPower(turn_pow);
         rightBack.setPower(-turn_pow);
         leftFront.setPower(turn_pow);
-        leftBack.setPower(turn_pow);
+        leftBack.setPower(-turn_pow);
     }
-    //public void boost(double boost_pow){
-     //   leftBoost.setPower(boost_pow);
-    //    rightBoost.setPower(boost_pow);
-    //}
+    public void boost(double boost_pow){
+       // leftBoost.setPower(-boost_pow);
+        //rightBoost.setPower(boost_pow);
+    }
     public void launch(double launch_pow){
         flyLaunch.setPower(launch_pow);
     }
 
     public void full_launch(double launch_pow) {
         launch(launch_pow);
-        //boost(1);
+        boost(1);
+    }
+    public void single_control(int motorC){
+        if(motorC==0){
+            rightFront.setPower(1);
+        }else if(motorC==1){
+            rightBack.setPower(1);
+        }else if(motorC==2){
+            leftFront.setPower(1);
+        }else if(motorC==3){
+            leftBack.setPower(1);
+        }else{
+            rightFront.setPower(0);
+            rightBack.setPower(0);
+            leftFront.setPower(0);
+            leftBack.setPower(0);
+        }
+
     }
 }

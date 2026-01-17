@@ -41,19 +41,29 @@ basicFunctions doStuff;
         }
 
 
-        if (gamepad1.right_stick_x != 0.0 || gamepad1.right_stick_y != 0.0) {
-            doStuff.move(gamepad1.right_stick_y,gamepad1.right_stick_x);
+        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1 ) {
+            if(gamepad1.right_stick_y >=0.1 || gamepad1.right_stick_y <= -0.1){
+                doStuff.move(gamepad1.right_stick_y,gamepad1.right_stick_x);
+            }else{
+                doStuff.move(0,gamepad1.right_stick_x);
+            }
+        }else if(gamepad1.right_stick_y >=0.1 || gamepad1.right_stick_y <= -0.1){
+            doStuff.move(gamepad1.right_stick_y,0);
         }
 
         if (gamepad1.right_trigger>0) {
             doStuff.full_launch(gamepad1.right_trigger);
-        }else if (gamepad1.a){
-            doStuff.full_launch((1));
-        }else if(gamepad1.x){
-            doStuff.full_launch(0.75);
+            telemetry.addData("Launch %: ",gamepad1.right_trigger);
+        }else if (gamepad1.left_trigger>0){
+            doStuff.full_launch(gamepad1.left_trigger/1.667);
+            telemetry.addData("Launch %: ",gamepad1.left_trigger/1.667);
         }
 
-
+        if (gamepad1.a){
+            doStuff.boost(1);
+        }else {
+            doStuff.boost(0);
+        }
         if (gamepad1.right_stick_x == 0.0 || gamepad1.right_stick_y == 0.0) {
             doStuff.move(0,0);
         }
@@ -62,5 +72,6 @@ basicFunctions doStuff;
     //stop button pressed
     public void stop(){
         doStuff.move(0,0);
+        doStuff.full_launch(0);
     }
 }
