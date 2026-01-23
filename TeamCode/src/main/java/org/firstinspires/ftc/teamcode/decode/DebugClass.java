@@ -28,7 +28,3 @@ public class DebugClass extends OpMode {
     }
 }
 
-//2FL -> FR
-//1BL -> FL
-//0FR->BR
-//3BR->BL

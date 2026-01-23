@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.net.CacheRequest;
 
@@ -28,8 +29,9 @@ public class basicFunctions{
         DcMotor leftBack = null;
         DcMotor rightBack = null;
         DcMotor flyLaunch = null;
-       // CRServo leftBoost = null;
-       // CRServo rightBoost = null;
+        Servo leftBoost = null;
+        Servo rightBoost = null;
+        boolean launchStart = false;
     }
 
     DcMotor leftFront;
@@ -37,8 +39,9 @@ public class basicFunctions{
     DcMotor leftBack;
     DcMotor rightBack;
     DcMotor flyLaunch = null;
-    //CRServo leftBoost = null;
-   // CRServo rightBoost = null;
+    Servo leftBoost = null;
+    Servo rightBoost = null;
+    boolean launchStart = false;
     /**
      * This is the hardwaremap, to be ran within the init(), it sets motors, sets their directions, and their run modes
      * @param hwMap In this variable you pass hardwareMap within the init(), which creates it
@@ -50,8 +53,8 @@ public class basicFunctions{
         rightBack = hwMap.get(DcMotor.class, "br_drive");
 
         flyLaunch = hwMap.get(DcMotor.class,"fly_wheel");
-        //leftBoost = hwMap.get(CRServo.class,"left_boost");
-       // rightBoost = hwMap.get(CRServo.class,"right_boost");
+         leftBoost = hwMap.get(Servo.class,"left_boost");
+         rightBoost = hwMap.get(Servo.class,"right_boost");
 
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -92,8 +95,8 @@ public class basicFunctions{
         leftBack.setPower(-turn_pow);
     }
     public void boost(double boost_pow){
-       // leftBoost.setPower(-boost_pow);
-        //rightBoost.setPower(boost_pow);
+       leftBoost.setPosition(boost_pow);
+       rightBoost.setPosition(-boost_pow);
     }
     public void launch(double launch_pow){
         flyLaunch.setPower(launch_pow);
@@ -102,6 +105,17 @@ public class basicFunctions{
     public void full_launch(double launch_pow) {
         launch(launch_pow);
         boost(1);
+    }
+
+    public void launch_binary(boolean todo){
+        if (todo) {
+
+            if (!launchStart) {
+                boolean launchStart = true;
+            } else {
+                boolean launchStart = false;
+            }
+        }
     }
     public void single_control(int motorC){
         if(motorC==0){

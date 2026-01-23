@@ -28,7 +28,7 @@ basicFunctions doStuff;
 
     @Override
     //basic movement and motor control
-    /**
+    /*
      * The main loop for the robot control. This includes launcher, intake, and drivetrain control. The left stick is used for turning, while the right stick is used for all strafing movement
      * The right bumper is used to launch the ball(s) in the launcher
      * The right trigger is used to activate intake(WIP)
@@ -61,13 +61,13 @@ basicFunctions doStuff;
 
         if (gamepad1.a){
             doStuff.boost(1);
-        }else {
+        }else{
             doStuff.boost(0);
         }
         if (gamepad1.right_stick_x == 0.0 || gamepad1.right_stick_y == 0.0) {
             doStuff.move(0,0);
         }
-
+        
     }
     //stop button pressed
     public void stop(){
