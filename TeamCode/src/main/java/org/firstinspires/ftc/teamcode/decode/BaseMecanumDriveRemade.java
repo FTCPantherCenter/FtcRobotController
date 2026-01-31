@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
-
+/**
+ * A simple mecanum drive I made at the beginning of the season, we do not use this
+ */
 @TeleOp
 public class BaseMecanumDriveRemade extends OpMode {
 

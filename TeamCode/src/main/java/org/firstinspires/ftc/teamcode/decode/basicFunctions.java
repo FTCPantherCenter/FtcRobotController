@@ -1,27 +1,22 @@
 package org.firstinspires.ftc.teamcode.decode;
 
-import android.text.InputFilter;
+
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import java.net.CacheRequest;
 
 /**
- * This class include basic robot moving functions such as:
- * Automatically initalizing the motors for "lowercase left-right" "Uppercase Front-Back", drive using encoder
- * The constructor defiles the DcMotors as null
- * 2 Methods are: move, turn(not including init or contstructor)
- * Move takes the input of a x and y power, meant to be controller joystick cordinates, and moves the motors using a mecanum formula
- * Turn takes 1 parameter, turn power, with a negative power turning left, and a positive power turning right. The input is meant to be a controller joystick x cordinate. The robot turns in place with proper mass distribution
+ * This is my main class for controlling the robot
+ * In this class are the motor powers are set and other classes control the robot indirectly using this
  */
-
 public class basicFunctions{
     /**
-     * This is the constructor, defining all of the motors as null
+     * This is the constructor
+     * It defines all the motors as null, and creates a new launchStart boolean for a later method
+     * The variables are defined in lower camel case
      */
     public void basicFunctions() {
         DcMotor leftFront = null;
@@ -29,22 +24,24 @@ public class basicFunctions{
         DcMotor leftBack = null;
         DcMotor rightBack = null;
         DcMotor flyLaunch = null;
-        Servo leftBoost = null;
-        Servo rightBoost = null;
+        CRServo leftBoost = null;
+        CRServo rightBoost = null;
         boolean launchStart = false;
     }
+
 
     DcMotor leftFront;
     DcMotor rightFront;
     DcMotor leftBack;
     DcMotor rightBack;
     DcMotor flyLaunch = null;
-    Servo leftBoost = null;
-    Servo rightBoost = null;
+    CRServo leftBoost = null;
+    CRServo rightBoost = null;
     boolean launchStart = false;
+
     /**
-     * This is the hardwaremap, to be ran within the init(), it sets motors, sets their directions, and their run modes
-     * @param hwMap In this variable you pass hardwareMap within the init(), which creates it
+     * This is the init method meant to be run in the init method of the OpMode, defining all the motors and settings
+     * @param hwMap This is the parameter which the HardwareMap created by the init method should be passed through
      */
     public void init(HardwareMap hwMap){
         leftFront = hwMap.get(DcMotor.class, "fl_drive");
@@ -53,8 +50,8 @@ public class basicFunctions{
         rightBack = hwMap.get(DcMotor.class, "br_drive");
 
         flyLaunch = hwMap.get(DcMotor.class,"fly_wheel");
-         leftBoost = hwMap.get(Servo.class,"left_boost");
-         rightBoost = hwMap.get(Servo.class,"right_boost");
+         leftBoost = hwMap.get(CRServo.class,"left_boost");
+         rightBoost = hwMap.get(CRServo.class,"right_boost");
 
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -71,9 +68,9 @@ public class basicFunctions{
     }
 
     /**
-     * This moves the robot with mecanum, with the x and y functioning as coordinates to move to relative to the robot, This assumes a perfect center of mass
-     * @param power_y This is where you put the y axis of the joystick, showing the y coordinate to move to
-     * @param power_x This is where you put the x axis of the joystick, showing the x coordinate to move to
+     * This is the method for the robots movement, using a basic mecanum drive
+     * @param power_y This is the speed at which the robot will move forward or backwards at, with a positive value moving the robot forward
+     * @param power_x This is the speed at which the robot will move left or right at, with a positive value moving the robot right
      */
     public void move(double power_y, double power_x){
         rightFront.setPower((-power_x + (-power_y)));
@@ -85,8 +82,8 @@ public class basicFunctions{
     }
 
     /**
-     * This turns the robot in place, assuming a perfect center of mass
-     * @param turn_pow Put the power of turning in place, with positive to the right and negative to the left
+     * This is the method used to turn the robot on its own axis
+     * @param turn_pow This is the speed, or power, or the turn, with a positive value turning the robot right
      */
     public void turn(double turn_pow) {
         rightFront.setPower(turn_pow);
@@ -94,21 +91,47 @@ public class basicFunctions{
         leftFront.setPower(turn_pow);
         leftBack.setPower(-turn_pow);
     }
-    public void boost(double boost_pow){
-       leftBoost.setPosition(boost_pow);
-       rightBoost.setPosition(-boost_pow);
+
+    /**
+     * This is the method used to power the left launch servo, an extension of CRServo.setPower, reversing the power
+     * @param boost_pow This value is inverted and used to launch the ball into the flywheel, should be kept consistent between servos
+     */
+    public void boost_left(double boost_pow){
+       leftBoost.setPower(-boost_pow);
     }
+
+    /**
+     * This is the method used to power the right launch servo, used as an extension of CRServo.setpower
+     * @param boost_pow This is the power at which the servo pushes the ball into the flywheel, should be consistent between servos
+     */
+    public void boost_right(double boost_pow){
+        rightBoost.setPower(boost_pow);
+    }
+
+    /**
+     * This method is used to power the flywheel
+     * @param launch_pow This is the speed that the flywheel moves at, out of 1
+     */
     public void launch(double launch_pow){
         flyLaunch.setPower(launch_pow);
     }
 
-    public void full_launch(double launch_pow) {
-        launch(launch_pow);
-        boost(1);
+    /**
+     * This is a method using both of the servo powering methods to power both simultaneously
+     * @param boost_pow This should be the power that the servos push the ball into the flywheel, almost always 1
+     */
+    public void boost(double boost_pow){
+        boost_right(boost_pow);
+        boost_left(boost_pow);
     }
 
-    public void launch_binary(boolean todo){
-        if (todo) {
+    /**
+     * This is a method that is used to alternate a variable between true and false when pressed
+     * It is used for a binary,on or off flywheel control
+     * @param doit This should always be true when calling the method, a toggle for it
+     */
+    public void launch_binary(boolean doit){
+        if (doit) {
 
             if (!launchStart) {
                 boolean launchStart = true;
@@ -117,6 +140,12 @@ public class basicFunctions{
             }
         }
     }
+
+    /**
+     * This is used to singly control each drivetrain motor, used in the Debug Class
+     * @param motorC This value correlates to the motor being powered as follows: 0- Front Right, 1- Back Right, 2- Front Left, 3- Left Back.
+     *               All other values make the motors unpowered
+     */
     public void single_control(int motorC){
         if(motorC==0){
             rightFront.setPower(1);

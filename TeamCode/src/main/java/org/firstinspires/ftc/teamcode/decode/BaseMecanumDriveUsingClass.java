@@ -6,33 +6,31 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
- * This is a teleop implication of the basicFunctions class
- * We begin by declaring but not defining basic functions out of any methods, then define basic functions, named do Stuff here, in the init method
- * We also run the doStuff init method with the HardwareMap from the OpMode init method
- * The loop integrates the turn and move methods, with the left stick x controlling turning, and the right stick x and y controlling staffing
- * The move method in doStuff is used to stop the robot
+ * This is our main driving class, a tele-op program using the basicFunctions class
+ * The drive is mecanum based, with moving and turning abilities
+ * This class also includes controls for the flywheel and launch servos
  */
-
 @TeleOp(name = "Base Mecanum Drive Using Class", group = "Drive")
 public class BaseMecanumDriveUsingClass extends OpMode {
-basicFunctions doStuff;
 
     /**
-     * This is where the doStuff class is created/defined and the initialization of motors happens
+     * This is the basicFunctions controller class, called doStuff here
+     */
+    basicFunctions doStuff;
+
+    /**
+     * Here the doStuff class is defined and the motors are initialized to the hardware map
      */
     public void init() {
         doStuff = new basicFunctions();
         doStuff.init(hardwareMap);
     }
 
-
-    @Override
-    //basic movement and motor control
-    /*
-     * The main loop for the robot control. This includes launcher, intake, and drivetrain control. The left stick is used for turning, while the right stick is used for all strafing movement
-     * The right bumper is used to launch the ball(s) in the launcher
-     * The right trigger is used to activate intake(WIP)
+    /**
+     * This is the main loop of the class with all needed controls
+     * It includes mecanum movement, turning, fly wheel, and boost servo controls
      */
+    @Override
     public void loop() {
 
         if (gamepad1.left_stick_x != 0.0 ){
@@ -43,35 +41,47 @@ basicFunctions doStuff;
 
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1 ) {
             if(gamepad1.right_stick_y >=0.1 || gamepad1.right_stick_y <= -0.1){
-                doStuff.move(gamepad1.right_stick_y,gamepad1.right_stick_x);
+                doStuff.move(-gamepad1.right_stick_y,-gamepad1.right_stick_x);
             }else{
-                doStuff.move(0,gamepad1.right_stick_x);
+                doStuff.move(0,-gamepad1.right_stick_x);
             }
         }else if(gamepad1.right_stick_y >=0.1 || gamepad1.right_stick_y <= -0.1){
-            doStuff.move(gamepad1.right_stick_y,0);
+            doStuff.move(-gamepad1.right_stick_y,0);
         }
 
+        if (gamepad1.x){
+            doStuff.launch_binary(true);
+        }
         if (gamepad1.right_trigger>0) {
-            doStuff.full_launch(gamepad1.right_trigger);
+            doStuff.launch(gamepad1.right_trigger);
             telemetry.addData("Launch %: ",gamepad1.right_trigger);
         }else if (gamepad1.left_trigger>0){
-            doStuff.full_launch(gamepad1.left_trigger/1.667);
-            telemetry.addData("Launch %: ",gamepad1.left_trigger/1.667);
+            doStuff.launch(gamepad1.left_trigger/1.4);
+            telemetry.addData("Launch %: ",gamepad1.left_trigger/1.4);
+        }else if (doStuff.launchStart){
+            doStuff.launch(0.7);
         }
 
         if (gamepad1.a){
-            doStuff.boost(1);
+            doStuff.boost_left(1);
+            doStuff.boost_right(1);
         }else{
-            doStuff.boost(0);
+            doStuff.boost_left(0);
+            doStuff.boost_right(0);
         }
         if (gamepad1.right_stick_x == 0.0 || gamepad1.right_stick_y == 0.0) {
             doStuff.move(0,0);
         }
-        
+
     }
     //stop button pressed
+
+    /**
+     * This stops all motors when the stop button is pressed
+     */
     public void stop(){
         doStuff.move(0,0);
-        doStuff.full_launch(0);
+        doStuff.launch(0);
+        doStuff.boost(0);
     }
 }
