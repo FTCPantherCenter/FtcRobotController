@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * This is an auto scoring class for the close starting position, for red team
  */
-@Autonomous(preselectTeleOp = "BaseMecanumDriveUsingClass")
+@Autonomous(preselectTeleOp = "TeleopMain")
 public class autoScoreCloseRed extends OpMode {
     /**
      * This creates the initial doStuff controller from the basicFunctions class
@@ -36,83 +36,90 @@ public class autoScoreCloseRed extends OpMode {
     @Override
     public void start() {
         super.start();
-        doStuff.move(-0.6,0);
+        doStuff.move(-0.5,0);
         timer.reset();
         while(timer.seconds()<=0.8){
-            telemetry.addData("Timer: ",0.3-timer.seconds());
+            telemetry.addData("Timer: ",0.8-timer.seconds());
             telemetry.clearAll();
         }
         telemetry.clearAll();
         doStuff.move(0,0);
-        doStuff.launch(0.70);
+        doStuff.launch(0.60);
         timer.reset();
         while(timer.seconds()<=4){
-            telemetry.addData("Timer: ",1-timer.seconds());
+            telemetry.addData("Timer: ",4-timer.seconds());
             telemetry.clearAll();
         }
         telemetry.clearAll();
         doStuff.boost(1);
         timer.reset();
-        while(timer.seconds()<=0.1){
-            telemetry.addData("Timer: ",0.25-timer.seconds());
+        while(timer.seconds()<=0.30){
+            telemetry.addData("Timer: ",0.2-timer.seconds());
             telemetry.clearAll();
+            telemetry.addData("Shoot 1 Fired","");
         }
         telemetry.clearAll();
         doStuff.boost(0);
         timer.reset();
-        while(timer.seconds()<=1){
-            telemetry.addData("Timer: ",1-timer.seconds());
+        while(timer.seconds()<=1.5){
+            telemetry.addData("Timer: ",1.5-timer.seconds());
             telemetry.clearAll();
+            telemetry.addData("Shoot 1 Fired + Finished","");
         }
         telemetry.clearAll();
         doStuff.boost(1);
         timer.reset();
-        while(timer.seconds()<=1){
-            telemetry.addData("Timer: ",1-timer.seconds());
-        telemetry.clearAll();
+        while(timer.seconds()<=0.2){
+            telemetry.addData("Timer: ",0.2-timer.seconds());
+            telemetry.clearAll();
+            telemetry.addData("Shoot 2 Fired","");
         }
         telemetry.clearAll();
         doStuff.boost(0);
-        doStuff.move(0.5,-1);
+        timer.reset();
+        while(timer.seconds()<=1.5){
+            telemetry.addData("Timer: ",1.5-timer.seconds());
+            telemetry.clearAll();
+            telemetry.addData("Shoot 2 Fired + Finished","");
+        }
+        telemetry.clearAll();
+        doStuff.boost(1);
+        timer.reset();
+        while(timer.seconds()<=0.2){
+            telemetry.addData("Timer: ",1.5-timer.seconds());
+            telemetry.clearAll();
+            telemetry.addData("Shoot 3 Fired","");
+        }
+        telemetry.clearAll();
+        doStuff.boost(0);
+
+        while(timer.seconds()<=1.5){
+            telemetry.addData("Timer: ",1.5-timer.seconds());
+            telemetry.addData("Shoot 3 Fired + Finished","");
+        }
+        doStuff.boost(1);
         timer.reset();
         while(timer.seconds()<=1){
             telemetry.addData("Timer: ",1-timer.seconds());
             telemetry.clearAll();
+            telemetry.addData("Shoot 4 Fired","");
         }
+        doStuff.move(-0.25,-0.5);
         telemetry.clearAll();
+        doStuff.boost(0);
         doStuff.move(0,0);
         while(timer.seconds()<=3){
             telemetry.addData("Timer: ",3-timer.seconds());
             telemetry.clearAll();
+            telemetry.addData("Shoot 4 Fired + Finished","");
         }
-        doStuff.move(-0.5,1);
+        timer.reset();
         while(timer.seconds()<=1){
             telemetry.addData("Timer: ",1-timer.seconds());
             telemetry.clearAll();
         }
         doStuff.move(0,0);
         telemetry.clearAll();
-        while(timer.seconds()<=1){
-            telemetry.addData("Timer: ",1-timer.seconds());
-            telemetry.clearAll();
-        }
-        telemetry.clearAll();
-        doStuff.boost(1);
-        timer.reset();
-        while(timer.seconds()<=0.25){
-            telemetry.addData("Timer: ",0.25-timer.seconds());
-            telemetry.clearAll();
-        }
-        telemetry.clearAll();
-        doStuff.boost(0);
-        timer.reset();
-        while(timer.seconds()<=1){
-            telemetry.addData("Timer: ",1-timer.seconds());
-            telemetry.clearAll();
-        }
-        telemetry.clearAll();
-        doStuff.boost(1);
-        timer.reset();
         while(timer.seconds()<=1){
             telemetry.addData("Timer: ",1-timer.seconds());
             telemetry.clearAll();
@@ -130,6 +137,7 @@ public class autoScoreCloseRed extends OpMode {
     @Override
     public void loop() {
         stop();
+
     }
 
     /**
