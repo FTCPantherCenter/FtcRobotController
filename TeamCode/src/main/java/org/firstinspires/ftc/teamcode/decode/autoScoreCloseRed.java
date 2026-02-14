@@ -44,7 +44,7 @@ public class autoScoreCloseRed extends OpMode {
         }
         telemetry.clearAll();
         doStuff.move(0,0);
-        doStuff.launch(0.60);
+        doStuff.launch(0.67);
         timer.reset();
         while(timer.seconds()<=4){
             telemetry.addData("Timer: ",4-timer.seconds());
@@ -61,8 +61,8 @@ public class autoScoreCloseRed extends OpMode {
         telemetry.clearAll();
         doStuff.boost(0);
         timer.reset();
-        while(timer.seconds()<=1.5){
-            telemetry.addData("Timer: ",1.5-timer.seconds());
+        while(timer.seconds()<=2){
+            telemetry.addData("Timer: ",2-timer.seconds());
             telemetry.clearAll();
             telemetry.addData("Shoot 1 Fired + Finished","");
         }
@@ -77,8 +77,8 @@ public class autoScoreCloseRed extends OpMode {
         telemetry.clearAll();
         doStuff.boost(0);
         timer.reset();
-        while(timer.seconds()<=1.5){
-            telemetry.addData("Timer: ",1.5-timer.seconds());
+        while(timer.seconds()<=2){
+            telemetry.addData("Timer: ",2-timer.seconds());
             telemetry.clearAll();
             telemetry.addData("Shoot 2 Fired + Finished","");
         }
@@ -93,8 +93,8 @@ public class autoScoreCloseRed extends OpMode {
         telemetry.clearAll();
         doStuff.boost(0);
 
-        while(timer.seconds()<=1.5){
-            telemetry.addData("Timer: ",1.5-timer.seconds());
+        while(timer.seconds()<=2){
+            telemetry.addData("Timer: ",2-timer.seconds());
             telemetry.addData("Shoot 3 Fired + Finished","");
         }
         doStuff.boost(1);
@@ -104,19 +104,14 @@ public class autoScoreCloseRed extends OpMode {
             telemetry.clearAll();
             telemetry.addData("Shoot 4 Fired","");
         }
-        doStuff.move(-0.25,-0.5);
-        telemetry.clearAll();
+        doStuff.move(-0.25,0.5);
         doStuff.boost(0);
-        doStuff.move(0,0);
-        while(timer.seconds()<=3){
-            telemetry.addData("Timer: ",3-timer.seconds());
-            telemetry.clearAll();
-            telemetry.addData("Shoot 4 Fired + Finished","");
-        }
+        telemetry.clearAll();
         timer.reset();
         while(timer.seconds()<=1){
             telemetry.addData("Timer: ",1-timer.seconds());
             telemetry.clearAll();
+            telemetry.addData("Shoot 4 Fired + Finished","");
         }
         doStuff.move(0,0);
         telemetry.clearAll();

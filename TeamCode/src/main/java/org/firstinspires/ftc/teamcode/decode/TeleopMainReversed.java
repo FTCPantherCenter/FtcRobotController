@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * The drive is mecanum based, with moving and turning abilities
  * This class also includes controls for the flywheel and launch servos
  */
-@TeleOp(name = "TeleopMain", group = "Drive")
-public class TeleopMain extends OpMode {
+@TeleOp(name = "TeleopMainReversed", group = "Drive")
+public class TeleopMainReversed extends OpMode {
 
     /**
      * This is the basicFunctions controller class, called doStuff here
@@ -22,9 +22,14 @@ public class TeleopMain extends OpMode {
     double dpad_mode = 0;
     boolean dpad_active = false;
     ElapsedTime timer = new ElapsedTime();
+
     public void boost_controls(ElapsedTime counter,double cooldown) {
+        if(counter.seconds() <= cooldown){
+            shot_Counter += 1;
+        }
         while (true ) {
             if (counter.seconds() <= cooldown) {
+
                 if (counter.seconds() <= 0.20) {
                     doStuff.boost(1);
                 } else {
@@ -63,20 +68,20 @@ public class TeleopMain extends OpMode {
                 shot_Counter = 0;
             }
         }
-        if (gamepad1.right_stick_x != 0.0 ){
+        if (gamepad1.left_stick_x != 0.0 ){
             //turning with left joystick horizontal
-            doStuff.turn(gamepad1.right_stick_x);
+            doStuff.turn(gamepad1.left_stick_x);
         }
 
 
-        if (gamepad1.left_stick_x >= 0.25 || gamepad1.left_stick_x <= -0.25 ) {
-            if(gamepad1.left_stick_y >=0.25 || gamepad1.left_stick_y <= -0.25){
-                doStuff.move(-gamepad1.left_stick_y,-gamepad1.left_stick_x);
+        if (gamepad1.right_stick_x >= 0.25 || gamepad1.right_stick_x <= -0.25 ) {
+            if(gamepad1.right_stick_y >=0.25 || gamepad1.right_stick_y <= -0.25){
+                doStuff.move(-gamepad1.right_stick_y,-gamepad1.right_stick_x);
             }else{
-                doStuff.move(0,-gamepad1.left_stick_x);
+                doStuff.move(0,-gamepad1.right_stick_x);
             }
-        }else if(gamepad1.left_stick_y >=0.25 || gamepad1.left_stick_y <= -0.25){
-            doStuff.move(-gamepad1.left_stick_y,0);
+        }else if(gamepad1.right_stick_y >=0.25 || gamepad1.right_stick_y <= -0.25){
+            doStuff.move(-gamepad1.right_stick_y,0);
         }
 
 
@@ -138,7 +143,7 @@ public class TeleopMain extends OpMode {
                 boost_controls(timer,1.2);
             }
         }
-        if (gamepad1.left_stick_x == 0.0 || gamepad1.left_stick_y == 0.0) {
+        if (gamepad1.right_stick_x == 0.0 || gamepad1.right_stick_y == 0.0) {
             doStuff.move(0,0);
         }
 
@@ -149,16 +154,18 @@ public class TeleopMain extends OpMode {
 
         telemetry.addData("Average Motor Power: ",get_average(doStuff.leftBack, doStuff.leftFront,doStuff.rightBack, doStuff.rightFront));
 
-        if (do_shot_counter){
-            telemetry.addData("Shot Counter Active","");
-            if (shot_Counter == 3){
-                doStuff.launch(0);
-                shot_Counter = 0;
-            }
-            telemetry.addData("Shot Count: ",shot_Counter);
-        }else {
-            telemetry.addData("Shot Counter Deactivated","");
-        }
+       if (do_shot_counter){
+           telemetry.addData("Shot Counter Active","");
+           if (shot_Counter == 3){
+               doStuff.launch(0);
+               shot_Counter = 0;
+           }
+           telemetry.addData("Shot Count: ",shot_Counter);
+       }else {
+           telemetry.addData("Shot Counter Deactivated","");
+       }
+
+
 
     }
     //stop button pressed
