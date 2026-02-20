@@ -34,12 +34,12 @@ public class autoBaseLeaveRight extends OpMode {
     @Override
     public void start() {
         super.start();
-        robotStuff.move(0.25,0.3);
+        robotStuff.move(0.25,0.3,0);
         timer.reset();
         if(timer.seconds()<=0.35){
             telemetry.addData("Timer: ",0.25-timer.seconds());
         }
-        robotStuff.move(0,0);
+        robotStuff.move(0,0,0);
         telemetry.addData("Autonomous Complete","");
         stop();
     }
@@ -58,7 +58,7 @@ public class autoBaseLeaveRight extends OpMode {
     @Override
     public void stop() {
         super.stop();
-        robotStuff.move(0,0);
+        robotStuff.move(0,0,0);
         robotStuff.launch(0);
         robotStuff.boost(0);
     }

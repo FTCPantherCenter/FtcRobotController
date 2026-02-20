@@ -34,12 +34,12 @@ public class autoForward extends OpMode {
     @Override
     public void start() {
         super.start();
-        robotStuff.move(1,0);
+        robotStuff.move(1,0,0);
         timer.reset();
         if(timer.seconds()<=0.25){
             telemetry.addData("Timer: ",0.25-timer.seconds());
         }
-        robotStuff.move(0,0);
+        robotStuff.move(0,0,0);
         telemetry.addData("Autonomous Complete","");
         stop();
     }
@@ -58,7 +58,7 @@ public class autoForward extends OpMode {
     @Override
     public void stop() {
         super.stop();
-        robotStuff.move(0,0);
+        robotStuff.move(0,0,0);
         robotStuff.launch(0);
         robotStuff.boost(0);
     }

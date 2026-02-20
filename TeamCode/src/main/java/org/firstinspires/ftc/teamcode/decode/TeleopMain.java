@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 /**
  * This is our main driving class, a tele-op program using the basicFunctions class
  * The drive is mecanum based, with moving and turning abilities
@@ -19,9 +21,11 @@ public class TeleopMain extends OpMode {
     basicFunctions doStuff;
     double shot_Counter = 0;
     boolean do_shot_counter = false;
+    boolean balls_loaded = false;
     double dpad_mode = 0;
     boolean dpad_active = false;
     ElapsedTime timer = new ElapsedTime();
+    ElapsedTime sense_timer = new ElapsedTime();
     public void boost_controls(ElapsedTime counter,double cooldown) {
         while (true ) {
             if (counter.seconds() <= cooldown) {
@@ -46,6 +50,7 @@ public class TeleopMain extends OpMode {
         doStuff = new basicFunctions();
         doStuff.init(hardwareMap);
         timer.reset();
+        sense_timer.reset();
     }
 
     /**
@@ -55,6 +60,14 @@ public class TeleopMain extends OpMode {
     @Override
     public void loop() {
 
+        double left_y = Math.abs(gamepad1.left_stick_y) < 0.25 ? 0.0 : gamepad1.left_stick_y;
+        double left_x = Math.abs(gamepad1.left_stick_x) < 0.25 ? 0.0 : gamepad1.left_stick_x;
+        double right_x = Math.abs(gamepad1.right_stick_x) < 0.25 ? 0.0 : gamepad1.right_stick_x;
+
+
+        //doStuff.move(left_y,left_x,right_x);
+
+
         if (gamepad1.rightBumperWasPressed()){
             if(do_shot_counter){
                 do_shot_counter = false;
@@ -63,21 +76,8 @@ public class TeleopMain extends OpMode {
                 shot_Counter = 0;
             }
         }
-        if (gamepad1.right_stick_x != 0.0 ){
-            //turning with left joystick horizontal
-            doStuff.turn(gamepad1.right_stick_x);
-        }
 
 
-        if (gamepad1.left_stick_x >= 0.25 || gamepad1.left_stick_x <= -0.25 ) {
-            if(gamepad1.left_stick_y >=0.25 || gamepad1.left_stick_y <= -0.25){
-                doStuff.move(-gamepad1.left_stick_y,-gamepad1.left_stick_x);
-            }else{
-                doStuff.move(0,-gamepad1.left_stick_x);
-            }
-        }else if(gamepad1.left_stick_y >=0.25 || gamepad1.left_stick_y <= -0.25){
-            doStuff.move(-gamepad1.left_stick_y,0);
-        }
 
 
         if (gamepad1.right_trigger>0) {
@@ -121,9 +121,10 @@ public class TeleopMain extends OpMode {
                 timer.reset();
                 boost_controls(timer,0.4);
             }
-        }else if (!doStuff.launchStart&&!gamepad1.bWasPressed()&&!gamepad1.aWasPressed()&&gamepad1.right_trigger==0&&gamepad1.left_trigger==0&&!gamepad1.yWasPressed()&&!gamepad1.dpad_left&&!gamepad1.dpad_up&&!dpad_active&&!gamepad1.dpad_right ){
+        }else if (!balls_loaded&&!doStuff.launchStart&&!gamepad1.bWasPressed()&&!gamepad1.aWasPressed()&&gamepad1.right_trigger==0&&gamepad1.left_trigger==0&&!gamepad1.yWasPressed()&&!gamepad1.dpad_left&&!gamepad1.dpad_up&&!dpad_active&&!gamepad1.dpad_right ){
             doStuff.launch(0);
         }
+
 
         if (gamepad1.xWasPressed()){
             telemetry.addData("X on Gamepad 1 Was Pressed","");
@@ -138,8 +139,8 @@ public class TeleopMain extends OpMode {
                 boost_controls(timer,1.2);
             }
         }
-        if (gamepad1.left_stick_x == 0.0 || gamepad1.left_stick_y == 0.0) {
-            doStuff.move(0,0);
+        if (left_x == 0.0 || left_y == 0.0||right_x == 0.0) {
+            doStuff.move(0,0,0);
         }
 
         if (gamepad1.y){
@@ -160,6 +161,20 @@ public class TeleopMain extends OpMode {
             telemetry.addData("Shot Counter Deactivated","");
         }
 
+        if(doStuff.get_distance(DistanceUnit.CM)>=7){
+            sense_timer.reset();
+            doStuff.launch(1/1.52);
+        }
+        if(sense_timer.seconds()<=0.5){
+            balls_loaded = true;
+        }else{
+            balls_loaded = false;
+        }
+
+        if (balls_loaded){
+            doStuff.launch(1/1.52);
+        }
+        doStuff.driveFieldRelative(left_y,left_x,right_x);
     }
     //stop button pressed
 
@@ -167,7 +182,7 @@ public class TeleopMain extends OpMode {
      * This stops all motors when the stop button is pressed
      */
     public void stop(){
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         doStuff.launch(0);
         doStuff.boost(0);
     }

@@ -39,12 +39,12 @@ public class autoScoreFarRed extends OpMode{
     @Override
     public void start() {
         super.start();
-        doStuff.move(-1,-0.1);
+        doStuff.move(-1,-0.1,0);
         timer.reset();
         if(timer.seconds()<=0.5){
             telemetry.addData("Time Left",0.5-timer.seconds());
         }
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         doStuff.turn(1);
         timer.reset();
         if(timer.seconds()<=0.25){
@@ -69,11 +69,11 @@ public class autoScoreFarRed extends OpMode{
             telemetry.addData("Time Left",0.25-timer.seconds());
         }
         doStuff.turn(0);
-        doStuff.move(0.5,0.1);
+        doStuff.move(0.5,0.1,0);
         if(timer.seconds()<=0.5){
             telemetry.addData("Time Left",0.5-timer.seconds());
         }
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         doStuff.launch(0);
         doStuff.boost(0);
         telemetry.addData("Autonomous Completed","");
@@ -94,7 +94,7 @@ public class autoScoreFarRed extends OpMode{
     @Override
     public void stop() {
         super.stop();
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         doStuff.launch(0);
         doStuff.boost(0);
     }

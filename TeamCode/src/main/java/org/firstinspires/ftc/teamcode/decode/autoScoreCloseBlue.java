@@ -36,14 +36,14 @@ public class autoScoreCloseBlue extends OpMode {
     @Override
     public void start(){
         super.start();
-        doStuff.move(-0.5,0);
+        doStuff.move(-0.5,0,0);
         timer.reset();
         while(timer.seconds()<=0.8){
         telemetry.addData("Timer: ",0.8-timer.seconds());
         telemetry.clearAll();
     }
         telemetry.clearAll();
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         doStuff.launch(0.67);
         timer.reset();
         while(timer.seconds()<=4){
@@ -104,7 +104,7 @@ public class autoScoreCloseBlue extends OpMode {
         telemetry.clearAll();
         telemetry.addData("Shoot 4 Fired","");
     }
-        doStuff.move(-0.25,-0.5);
+        doStuff.move(-0.25,-0.5,0);
         doStuff.boost(0);
         timer.reset();
         telemetry.clearAll();
@@ -113,7 +113,7 @@ public class autoScoreCloseBlue extends OpMode {
         telemetry.clearAll();
         telemetry.addData("Shoot 4 Fired + Finished","");
     }
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         telemetry.clearAll();
         while(timer.seconds()<=1){
         telemetry.addData("Timer: ",1-timer.seconds());
@@ -121,7 +121,7 @@ public class autoScoreCloseBlue extends OpMode {
     }
         telemetry.clearAll();
         doStuff.boost(0);
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         telemetry.addData("Autonomous Complete","");
     stop();
     }
@@ -140,7 +140,7 @@ public class autoScoreCloseBlue extends OpMode {
     @Override
     public void stop() {
         super.stop();
-        doStuff.move(0,0);
+        doStuff.move(0,0,0);
         doStuff.launch(0);
         doStuff.boost(0);
     }
