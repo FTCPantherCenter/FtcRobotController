@@ -36,13 +36,13 @@ public class basicFunctions{
         CRServo leftBoost = null;
         CRServo rightBoost = null;
         try {
-            DistanceSensor distanceSensor = null;
+          //  DistanceSensor distanceSensor = null;
         } catch (Exception e) {
-            boolean sensorFail = true;
-            DistanceSensor distanceSensor = null;
+          //  boolean sensorFail = true;
+          //  DistanceSensor distanceSensor = null;
         }
 
-        boolean launchStart = false;
+     //   boolean launchStart = false;
     }
 
 
@@ -56,18 +56,20 @@ public class basicFunctions{
     CRServo leftBoost = null;
     CRServo rightBoost = null;
     boolean launchStart = false;
-
+    /*
     public boolean try_sensor(){
         try {
-            DistanceSensor distanceSensor = null;
+           // DistanceSensor distanceSensor = null;
         } catch (Exception e) {
-            boolean sensorFail = true;
-            return false;
+           // boolean sensorFail = true;
+           // return false;
         }
-        return true;
+       // return true;
     }
 
-    DistanceSensor distanceSensor = null;
+     */
+
+   // DistanceSensor distanceSensor = null;
     /**
      * This is the init method meant to be run in the init method of the OpMode, defining all the motors and settings
      * @param hwMap This is the parameter which the HardwareMap created by the init method should be passed through
@@ -75,7 +77,7 @@ public class basicFunctions{
 
 
     public void init(HardwareMap hwMap){
-        boolean failed =try_sensor();
+        //boolean failed =try_sensor();
         leftFront = hwMap.get(DcMotor.class, "fl_drive");
         leftBack = hwMap.get(DcMotor.class, "bl_drive");
         rightFront = hwMap.get(DcMotor.class, "fr_drive");
@@ -98,11 +100,13 @@ public class basicFunctions{
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         flyLaunch.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+        /*
         if(!failed){
-            DistanceSensor distanceSensor = hwMap.get(DistanceSensor.class,"distance_sensor");
+         //   DistanceSensor distanceSensor = hwMap.get(DistanceSensor.class,"distance_sensor");
         }
-        DistanceSensor distanceSensor = hwMap.get(DistanceSensor.class,"distance_sensor");
+
+         */
+        //DistanceSensor distanceSensor = hwMap.get(DistanceSensor.class,"distance_sensor");
 
         RevHubOrientationOnRobot revOrientation =
                 new RevHubOrientationOnRobot(
@@ -113,24 +117,36 @@ public class basicFunctions{
         imu.initialize(new IMU.Parameters(revOrientation));
     }
 
+    /*
     public double get_distance(DistanceUnit distanceUnit){
-        return distanceSensor.getDistance(distanceUnit);
+       // return distanceSensor.getDistance(distanceUnit);
     }
 
-    public double get_velocity(AngleUnit angleUnit){
-        return flyLaunch.getVelocity(angleUnit);
+     */
+
+    public double get_velocity(DcMotorEx motor,AngleUnit angleUnit){
+        return motor.getVelocity(angleUnit);
     }
     public void driveFieldRelative(double forward, double right, double rotate){
         double robotAngle = getHeading(AngleUnit.RADIANS);
 
+        //this part below turns from cartesian to polar
+        //cartesian we know from forward and right, we use trig to get the length to travel and the angle from current robot positon
+        //this uses the tan(theta) = opposite/adjacent to get the radians of the angle formed between current robot looking position and goal position
         double theta = Math.atan2(forward,right);
+        //gets length of the hypotenuse, or "strength" to move forward, using pythagorean thereom
         double r = Math.hypot(forward,right);
 
+
+        //gets difference in angles
         theta = AngleUnit.normalizeRadians(theta-robotAngle);
 
+
+        //reverses the trig
         double newForward = r * Math.sin(theta);
         double newRight = r * Math.cos(theta);
 
+        //moves the robots to the new coordinates passing in rotation offset
         move(newForward,newRight,rotate);
     }
 

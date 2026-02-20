@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /**
@@ -65,12 +66,15 @@ public class TeleopMainReversed extends OpMode {
      */
     @Override
     public void loop() {
+
         double left_y = Math.abs(gamepad1.right_stick_y) < 0.25 ? 0.0 : gamepad1.right_stick_y;
         double left_x = Math.abs(gamepad1.right_stick_x) < 0.25 ? 0.0 : gamepad1.right_stick_x;
         double right_x = Math.abs(gamepad1.left_stick_x) < 0.25 ? 0.0 : gamepad1.left_stick_x;
 
 
         //doStuff.move(left_y,left_x,right_x);
+
+
         if (gamepad1.rightBumperWasPressed()){
             if(do_shot_counter){
                 do_shot_counter = false;
@@ -128,6 +132,7 @@ public class TeleopMainReversed extends OpMode {
             doStuff.launch(0);
         }
 
+
         if (gamepad1.xWasPressed()){
             telemetry.addData("X on Gamepad 1 Was Pressed","");
             if (timer.seconds() <= 1.2){
@@ -152,32 +157,37 @@ public class TeleopMainReversed extends OpMode {
 
         telemetry.addData("Average Motor Power: ",get_average(doStuff.leftBack, doStuff.leftFront,doStuff.rightBack, doStuff.rightFront));
 
-       if (do_shot_counter){
-           telemetry.addData("Shot Counter Active","");
-           if (shot_Counter == 3){
-               doStuff.launch(0);
-               shot_Counter = 0;
-           }
-           telemetry.addData("Shot Count: ",shot_Counter);
-       }else {
-           telemetry.addData("Shot Counter Deactivated","");
-       }
+        if (do_shot_counter){
+            telemetry.addData("Shot Counter Active","");
+            if (shot_Counter == 3){
+                doStuff.launch(0);
+                shot_Counter = 0;
+            }
+            telemetry.addData("Shot Count: ",shot_Counter);
+        }else {
+            telemetry.addData("Shot Counter Deactivated","");
+        }
+            /*
 
-       if(doStuff.get_distance(DistanceUnit.CM)>=7){
-           sense_timer.reset();
-           doStuff.launch(1/1.52);
-       }
+        if(doStuff.get_distance(DistanceUnit.CM)>=7){
+            sense_timer.reset();
+            doStuff.launch(1/1.52);
+        }
         if(sense_timer.seconds()<=0.5){
             balls_loaded = true;
         }else{
             balls_loaded = false;
         }
 
+             */
+        /*
         if (balls_loaded){
             doStuff.launch(1/1.52);
         }
 
+         */
         doStuff.driveFieldRelative(left_y,left_x,right_x);
+        telemetry.addData("Flywheel Speed: ", doStuff.get_velocity(doStuff.flyLaunch, AngleUnit.DEGREES));
     }
     //stop button pressed
 

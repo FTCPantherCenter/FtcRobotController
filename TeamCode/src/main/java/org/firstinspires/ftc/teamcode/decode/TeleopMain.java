@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /**
@@ -160,6 +161,7 @@ public class TeleopMain extends OpMode {
         }else {
             telemetry.addData("Shot Counter Deactivated","");
         }
+            /*
 
         if(doStuff.get_distance(DistanceUnit.CM)>=7){
             sense_timer.reset();
@@ -171,10 +173,15 @@ public class TeleopMain extends OpMode {
             balls_loaded = false;
         }
 
+             */
+        /*
         if (balls_loaded){
             doStuff.launch(1/1.52);
         }
+
+         */
         doStuff.driveFieldRelative(left_y,left_x,right_x);
+        telemetry.addData("Flywheel Speed: ", doStuff.get_velocity(doStuff.flyLaunch, AngleUnit.DEGREES));
     }
     //stop button pressed
 
