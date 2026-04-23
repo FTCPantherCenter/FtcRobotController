@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.decode;
 
 
 
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,6 +17,7 @@ import com.qualcomm.robotcore.hardware.LED;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 
 
 /**
@@ -26,7 +30,8 @@ public class basicFunctions{
      * It defines all the motors as null, and creates a new launchStart boolean for a later method
      * The variables are defined in lower camel case
      */
-    public void basicFunctions() {
+    public basicFunctions() {
+       // Limelight3A limelight = null;
         IMU imu = null;
         DcMotor leftFront = null;
         DcMotor rightFront = null;
@@ -46,6 +51,7 @@ public class basicFunctions{
     }
 
 
+    //Limelight3A limelight= null;
     IMU imu = null;
 
     DcMotor leftFront;
@@ -78,6 +84,7 @@ public class basicFunctions{
 
     public void init(HardwareMap hwMap){
         //boolean failed =try_sensor();
+    //    limelight = hwMap.get(Limelight3A.class,"limelight");
         leftFront = hwMap.get(DcMotor.class, "fl_drive");
         leftBack = hwMap.get(DcMotor.class, "bl_drive");
         rightFront = hwMap.get(DcMotor.class, "fr_drive");
@@ -115,6 +122,8 @@ public class basicFunctions{
         );
 
         imu.initialize(new IMU.Parameters(revOrientation));
+
+        //limelight.pipelineSwitch(1);
     }
 
     /*
@@ -124,7 +133,32 @@ public class basicFunctions{
 
      */
 
-    public double get_velocity(DcMotorEx motor,AngleUnit angleUnit){
+    public LLResult get_result(Limelight3A limelight){
+        return limelight.getLatestResult();
+    }
+
+    public boolean result_valid(LLResult result){
+        if(result != null && result.isValid()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public double april_check(LLResult result){
+//how?
+        return 0;
+    }
+
+    public Pose3D get_bot_pose(LLResult result){
+    return result.getBotpose();
+    }
+
+    public CRServo getLeftBoost() {
+        return leftBoost;
+    }
+
+    public double get_velocity(DcMotorEx motor, AngleUnit angleUnit){
         return motor.getVelocity(angleUnit);
     }
     public void driveFieldRelative(double forward, double right, double rotate){
@@ -136,7 +170,6 @@ public class basicFunctions{
         double theta = Math.atan2(forward,right);
         //gets length of the hypotenuse, or "strength" to move forward, using pythagorean thereom
         double r = Math.hypot(forward,right);
-
 
         //gets difference in angles
         theta = AngleUnit.normalizeRadians(theta-robotAngle);
